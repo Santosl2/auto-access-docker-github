@@ -1,4 +1,5 @@
 # Auto Access
+<img width="1058" height="676" alt="image" src="https://github.com/user-attachments/assets/8c1efabd-e267-44a8-8f0f-a5ac659b4f80" />
 
 Automated system for granting access to private GitHub repositories and Docker Hub images with credential distribution via email.
 
