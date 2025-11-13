@@ -8,12 +8,12 @@ export async function generateDockerToken(username: string): Promise<string> {
 
   try {
     // Authenticate with Docker Hub
-    const authResponse = await fetch('https://hub.docker.com/v2/users/login/', {
+    const authResponse = await fetch('https://hub.docker.com/v2/auth/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username: dockerHubUsername,
-        password: dockerHubToken,
+        identifier: dockerHubUsername,
+        secret: dockerHubToken,
       }),
     })
 
@@ -22,27 +22,34 @@ export async function generateDockerToken(username: string): Promise<string> {
     }
 
     const authData = await authResponse.json()
-    const accessToken = authData.token
+    const accessToken = authData.access_token
 
+    const sixMonthsFromNow = new Date()
+    sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6)
+
+    const expiresAtToken = sixMonthsFromNow.toISOString() // 6 months from now
     // Create a new personal access token for the user
     const tokenName = `access-${username}-${Date.now()}`
     const tokenResponse = await fetch(
-      `https://hub.docker.com/v2/users/${dockerHubUsername}/tokens/`,
+      'https://hub.docker.com/v2/access-tokens',
       {
         method: 'POST',
         headers: {
-          Authorization: `JWT ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           token_label: tokenName,
-          token_description: `Token generated for ${username}`,
+          scopes: ['repo:read'],
+          expires_at: expiresAtToken,
         }),
       }
     )
 
     if (!tokenResponse.ok) {
-      throw new Error('Failed to create Docker Hub token')
+      throw new Error(
+        `Failed to create Docker Hub token${await tokenResponse.text()}`
+      )
     }
 
     const tokenData = await tokenResponse.json()

@@ -19,9 +19,9 @@ export async function sendAccessEmail(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'access@example.com',
+        from: 'Evolution API  Pro <onboarding@resend.dev>',
         to: email,
-        subject: 'Your Private Repository Access is Ready',
+        subject: 'Evolution API PRO - Your Private Repository Access is Ready',
         html: `
           <!DOCTYPE html>
           <html>
@@ -87,7 +87,9 @@ export async function sendAccessEmail(
     }
   } catch (error) {
     throw new Error(
-      `Failed to send email: ${error instanceof Error ? error.message : 'Unknown error'}`
+      `Failed to send email: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
     )
   }
 }

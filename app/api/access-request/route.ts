@@ -1,4 +1,3 @@
-import { generateDockerToken } from '@/lib/docker'
 import { sendAccessEmail } from '@/lib/email'
 import { grantGitHubAccess } from '@/lib/github'
 import { createClient } from '@/lib/supabase/server'
@@ -7,9 +6,9 @@ import { type NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { github_username, email } = body
+    const { github_username, email, dockerToken } = body
 
-    if (!github_username || !email) {
+    if (!github_username || !email || !dockerToken) {
       return NextResponse.json(
         { error: 'GitHub username and email are required' },
         { status: 400 }
@@ -37,18 +36,19 @@ export async function POST(request: NextRequest) {
     }
 
     try {
+      // Removed - Generate Docker token
+      // const dockerToken = await generateDockerToken(github_username);
+
       // Grant GitHub access
       await grantGitHubAccess(github_username)
-
-      // Generate Docker token
-      const dockerToken = await generateDockerToken(github_username)
 
       // Send email with credentials
       await sendAccessEmail(
         email,
         github_username,
         `${process.env.GITHUB_REPO_OWNER}/${process.env.GITHUB_REPO_NAME}`,
-        process.env.DOCKER_HUB_REPO || 'your-docker-image',
+        `${process.env.DOCKER_HUB_USERNAME}/${process.env.DOCKER_HUB_REPO}` ||
+          'your-docker-image',
         dockerToken
       )
 
@@ -83,13 +83,13 @@ export async function POST(request: NextRequest) {
               ? integrationError.message
               : 'Integration failed',
         },
-        { status: 500 }
+        { status: 400 }
       )
     }
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 400 }
     )
   }
 }

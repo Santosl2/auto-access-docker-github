@@ -18,6 +18,7 @@ import { useState } from 'react'
 export default function AccessRequestForm() {
   const [github, setGithub] = useState('')
   const [email, setEmail] = useState('')
+  const [dockerToken, setDockerToken] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -35,6 +36,7 @@ export default function AccessRequestForm() {
         body: JSON.stringify({
           github_username: github.trim(),
           email: email.trim(),
+          dockerToken: dockerToken.trim(),
         }),
       })
 
@@ -48,6 +50,7 @@ export default function AccessRequestForm() {
       setSuccess(true)
       setGithub('')
       setEmail('')
+      setDockerToken('')
 
       // Reset success message after 5 seconds
       setTimeout(() => setSuccess(false), 5000)
@@ -103,6 +106,22 @@ export default function AccessRequestForm() {
             <p className="text-xs text-slate-400">
               We'll send your Docker credentials here
             </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="dockerToken" className="text-slate-200">
+              Docker token
+            </Label>
+            <Input
+              id="dockerToken"
+              type="text"
+              placeholder="dckr_pat_xxxxxxxxxxxxxxxxxxxx"
+              value={dockerToken}
+              onChange={e => setDockerToken(e.target.value)}
+              disabled={loading}
+              required
+              className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
+            />
           </div>
 
           {error && (
