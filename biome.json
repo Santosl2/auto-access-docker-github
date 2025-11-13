@@ -41,6 +41,6 @@
     }
   },
   "files": {
-    "ignore": ["node_modules", "**/*.cy.ts"]
+    "ignore": ["node_modules"]
   }
 }

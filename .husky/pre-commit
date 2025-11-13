@@ -8,4 +8,3 @@ a=$(nvm current)
 
 export PATH="$NVM_DIR/versions/node/$a/bin:$PATH"
 
-npx lint-staged

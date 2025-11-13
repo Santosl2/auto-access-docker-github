@@ -19,7 +19,9 @@ export async function sendAccessEmail(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: process.env.EMAIL_FROM_NAME || 'Evolution API  Pro <onboarding@resend.dev>',
+        from:
+          process.env.EMAIL_FROM_NAME ||
+          'Evolution API  Pro <onboarding@resend.dev>',
         to: email,
         subject: 'Evolution API PRO - Your Private Repository Access is Ready',
         html: `
