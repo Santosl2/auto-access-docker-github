@@ -1,17 +1,23 @@
-"use client"
+'use client'
 
-import type React from "react"
+import type React from 'react'
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { AlertCircle, CheckCircle, Loader } from "lucide-react"
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { AlertCircle, CheckCircle, Loader } from 'lucide-react'
+import { useState } from 'react'
 
 export default function AccessRequestForm() {
-  const [github, setGithub] = useState("")
-  const [email, setEmail] = useState("")
+  const [github, setGithub] = useState('')
+  const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -23,9 +29,9 @@ export default function AccessRequestForm() {
     setSuccess(false)
 
     try {
-      const response = await fetch("/api/access-request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/access-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           github_username: github.trim(),
           email: email.trim(),
@@ -35,18 +41,18 @@ export default function AccessRequestForm() {
       const result = await response.json()
 
       if (!response.ok) {
-        setError(result.error || "Failed to submit request")
+        setError(result.error || 'Failed to submit request')
         return
       }
 
       setSuccess(true)
-      setGithub("")
-      setEmail("")
+      setGithub('')
+      setEmail('')
 
       // Reset success message after 5 seconds
       setTimeout(() => setSuccess(false), 5000)
     } catch (err) {
-      setError("Network error. Please try again.")
+      setError('Network error. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -56,7 +62,9 @@ export default function AccessRequestForm() {
     <Card className="w-full max-w-md border border-slate-700 bg-slate-800/50 shadow-xl">
       <CardHeader>
         <CardTitle className="text-2xl text-white">Request Access</CardTitle>
-        <CardDescription className="text-slate-300">Enter your GitHub username to request access</CardDescription>
+        <CardDescription className="text-slate-300">
+          Enter your GitHub username to request access
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,12 +76,14 @@ export default function AccessRequestForm() {
               id="github"
               placeholder="your-github-username"
               value={github}
-              onChange={(e) => setGithub(e.target.value)}
+              onChange={e => setGithub(e.target.value)}
               disabled={loading}
               required
               className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
             />
-            <p className="text-xs text-slate-400">The username will be added to the private repository</p>
+            <p className="text-xs text-slate-400">
+              The username will be added to the private repository
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -85,12 +95,14 @@ export default function AccessRequestForm() {
               type="email"
               placeholder="your@email.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               disabled={loading}
               required
               className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
             />
-            <p className="text-xs text-slate-400">We'll send your Docker credentials here</p>
+            <p className="text-xs text-slate-400">
+              We'll send your Docker credentials here
+            </p>
           </div>
 
           {error && (
@@ -103,7 +115,9 @@ export default function AccessRequestForm() {
           {success && (
             <div className="rounded-lg bg-green-500/10 border border-green-500/20 p-3 flex gap-2 text-sm text-green-400">
               <CheckCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
-              <span>Request submitted! Check your email for access details.</span>
+              <span>
+                Request submitted! Check your email for access details.
+              </span>
             </div>
           )}
 
@@ -118,7 +132,7 @@ export default function AccessRequestForm() {
                 Processing...
               </span>
             ) : (
-              "Request Access"
+              'Request Access'
             )}
           </Button>
 

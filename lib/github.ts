@@ -4,21 +4,24 @@ export async function grantGitHubAccess(username: string): Promise<string> {
   const repoName = process.env.GITHUB_REPO_NAME
 
   if (!token || !repoOwner || !repoName) {
-    throw new Error("GitHub credentials not configured")
+    throw new Error('GitHub credentials not configured')
   }
 
   try {
-    const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/collaborators/${username}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        permission: "pull",
-      }),
-    })
+    const response = await fetch(
+      `https://api.github.com/repos/${repoOwner}/${repoName}/collaborators/${username}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          permission: 'pull',
+        }),
+      }
+    )
 
     if (!response.ok) {
       const error = await response.json()
@@ -27,6 +30,8 @@ export async function grantGitHubAccess(username: string): Promise<string> {
 
     return `Successfully granted access to ${username}`
   } catch (error) {
-    throw new Error(`Failed to grant GitHub access: ${error instanceof Error ? error.message : "Unknown error"}`)
+    throw new Error(
+      `Failed to grant GitHub access: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   }
 }

@@ -1,17 +1,17 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { CheckCircle, XCircle, Clock, RefreshCw, Copy } from "lucide-react"
-import { format } from "date-fns"
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { format } from 'date-fns'
+import { CheckCircle, Clock, Copy, RefreshCw, XCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface AccessRequest {
   id: string
   github_username: string
   email: string
-  status: "pending" | "approved" | "failed"
+  status: 'pending' | 'approved' | 'failed'
   docker_token?: string
   created_at: string
 }
@@ -25,12 +25,12 @@ export default function RequestsDashboard() {
   const fetchRequests = async () => {
     try {
       setLoading(true)
-      const response = await fetch("/api/access-request")
+      const response = await fetch('/api/access-request')
       const data = await response.json()
       setRequests(data.data || [])
       setError(null)
     } catch (err) {
-      setError("Failed to fetch requests")
+      setError('Failed to fetch requests')
     } finally {
       setLoading(false)
     }
@@ -45,9 +45,9 @@ export default function RequestsDashboard() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "approved":
+      case 'approved':
         return <CheckCircle className="h-4 w-4 text-green-400" />
-      case "failed":
+      case 'failed':
         return <XCircle className="h-4 w-4 text-red-400" />
       default:
         return <Clock className="h-4 w-4 text-yellow-400" />
@@ -56,12 +56,24 @@ export default function RequestsDashboard() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "approved":
-        return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Approved</Badge>
-      case "failed":
-        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Failed</Badge>
+      case 'approved':
+        return (
+          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+            Approved
+          </Badge>
+        )
+      case 'failed':
+        return (
+          <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
+            Failed
+          </Badge>
+        )
       default:
-        return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Pending</Badge>
+        return (
+          <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
+            Pending
+          </Badge>
+        )
     }
   }
 
@@ -113,29 +125,41 @@ export default function RequestsDashboard() {
         </Card>
       ) : (
         <div className="space-y-3">
-          {requests.map((request) => (
-            <Card key={request.id} className="border-slate-700 bg-slate-800/50 hover:bg-slate-700/50 transition">
+          {requests.map(request => (
+            <Card
+              key={request.id}
+              className="border-slate-700 bg-slate-800/50 hover:bg-slate-700/50 transition"
+            >
               <CardContent className="pt-6">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 space-y-3">
                     <div className="flex items-center gap-3">
                       {getStatusIcon(request.status)}
                       <div>
-                        <p className="font-semibold text-white">@{request.github_username}</p>
-                        <p className="text-sm text-slate-400">{request.email}</p>
+                        <p className="font-semibold text-white">
+                          @{request.github_username}
+                        </p>
+                        <p className="text-sm text-slate-400">
+                          {request.email}
+                        </p>
                       </div>
                     </div>
 
                     <div className="flex gap-2">
                       {getStatusBadge(request.status)}
                       <span className="text-xs text-slate-400">
-                        {format(new Date(request.created_at), "MMM d, yyyy h:mm a")}
+                        {format(
+                          new Date(request.created_at),
+                          'MMM d, yyyy h:mm a'
+                        )}
                       </span>
                     </div>
 
-                    {request.status === "approved" && request.docker_token && (
+                    {request.status === 'approved' && request.docker_token && (
                       <div className="mt-4 p-3 bg-slate-700/30 rounded border border-slate-600 space-y-2">
-                        <p className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Docker Token</p>
+                        <p className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                          Docker Token
+                        </p>
                         <div className="flex items-center gap-2">
                           <code className="flex-1 text-xs bg-slate-900 p-2 rounded border border-slate-600 text-slate-200 break-all">
                             {request.docker_token.substring(0, 20)}...
@@ -143,7 +167,12 @@ export default function RequestsDashboard() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => copyToClipboard(request.docker_token || "", request.id)}
+                            onClick={() =>
+                              copyToClipboard(
+                                request.docker_token || '',
+                                request.id
+                              )
+                            }
                             className="text-slate-400 hover:text-white hover:bg-slate-600"
                           >
                             {copiedId === request.id ? (

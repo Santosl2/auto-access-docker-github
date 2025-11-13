@@ -3,25 +3,25 @@ export async function sendAccessEmail(
   username: string,
   gitHubRepo: string,
   dockerImage: string,
-  dockerToken: string,
+  dockerToken: string
 ): Promise<void> {
   const resendApiKey = process.env.RESEND_API_KEY
 
   if (!resendApiKey) {
-    throw new Error("Resend API key not configured")
+    throw new Error('Resend API key not configured')
   }
 
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${resendApiKey}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: "access@example.com",
+        from: 'access@example.com',
         to: email,
-        subject: "Your Private Repository Access is Ready",
+        subject: 'Your Private Repository Access is Ready',
         html: `
           <!DOCTYPE html>
           <html>
@@ -86,6 +86,8 @@ export async function sendAccessEmail(
       throw new Error(`Resend API error: ${error.message}`)
     }
   } catch (error) {
-    throw new Error(`Failed to send email: ${error instanceof Error ? error.message : "Unknown error"}`)
+    throw new Error(
+      `Failed to send email: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   }
 }
