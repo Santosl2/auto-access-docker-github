@@ -13,6 +13,8 @@ interface AccessRequest {
   email: string
   status: 'pending' | 'approved' | 'failed'
   docker_token?: string
+  valor_venda?: number | null
+  observacao?: string | null
   created_at: string
 }
 
@@ -154,6 +156,22 @@ export default function RequestsDashboard() {
                         )}
                       </span>
                     </div>
+
+                    {request.valor_venda && (
+                      <div className="mt-2 p-2 bg-blue-500/10 rounded border border-blue-500/30">
+                        <p className="text-xs text-blue-300">
+                          <span className="font-semibold">Valor de Venda:</span> R$ {request.valor_venda.toFixed(2)}
+                        </p>
+                      </div>
+                    )}
+
+                    {request.observacao && (
+                      <div className="mt-2 p-2 bg-slate-700/30 rounded border border-slate-600">
+                        <p className="text-xs text-slate-300">
+                          <span className="font-semibold">Observação:</span> {request.observacao}
+                        </p>
+                      </div>
+                    )}
 
                     {request.status === 'approved' && request.docker_token && (
                       <div className="mt-4 p-3 bg-slate-700/30 rounded border border-slate-600 space-y-2">

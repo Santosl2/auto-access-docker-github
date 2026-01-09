@@ -19,6 +19,8 @@ export default function AccessRequestForm() {
   const [github, setGithub] = useState('')
   const [email, setEmail] = useState('')
   const [dockerToken, setDockerToken] = useState('')
+  const [valorVenda, setValorVenda] = useState('')
+  const [observacao, setObservacao] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -37,6 +39,8 @@ export default function AccessRequestForm() {
           github_username: github.trim(),
           email: email.trim(),
           dockerToken: dockerToken.trim(),
+          valor_venda: valorVenda ? Number.parseFloat(valorVenda) : null,
+          observacao: observacao.trim() || null,
         }),
       })
 
@@ -51,6 +55,8 @@ export default function AccessRequestForm() {
       setGithub('')
       setEmail('')
       setDockerToken('')
+      setValorVenda('')
+      setObservacao('')
 
       // Reset success message after 5 seconds
       setTimeout(() => setSuccess(false), 5000)
@@ -73,7 +79,7 @@ export default function AccessRequestForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="github" className="text-slate-200">
-              GitHub Username
+              GitHub Username (opcional)
             </Label>
             <Input
               id="github"
@@ -81,7 +87,6 @@ export default function AccessRequestForm() {
               value={github}
               onChange={e => setGithub(e.target.value)}
               disabled={loading}
-              required
               className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
             />
             <p className="text-xs text-slate-400">
@@ -123,6 +128,37 @@ export default function AccessRequestForm() {
             />
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="valorVenda" className="text-slate-200">
+              Valor de Venda (opcional)
+            </Label>
+            <Input
+              id="valorVenda"
+              type="number"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              value={valorVenda}
+              onChange={e => setValorVenda(e.target.value)}
+              disabled={loading}
+              className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="observacao" className="text-slate-200">
+              Observação (opcional)
+            </Label>
+            <textarea
+              id="observacao"
+              placeholder="Digite suas anotações aqui..."
+              value={observacao}
+              onChange={e => setObservacao(e.target.value)}
+              disabled={loading}
+              className="w-full bg-slate-700/50 border border-slate-600 text-white placeholder:text-slate-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-24"
+            />
+          </div>
+
           {error && (
             <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3 flex gap-2 text-sm text-red-400">
               <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
@@ -142,7 +178,7 @@ export default function AccessRequestForm() {
           <Button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 h-10"
-            disabled={loading || !github.trim()}
+            disabled={loading || !dockerToken.trim()}
           >
             {loading ? (
               <span className="flex items-center gap-2">

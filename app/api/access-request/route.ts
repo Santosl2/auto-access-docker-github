@@ -6,11 +6,11 @@ import { type NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { github_username, email, dockerToken } = body;
+    const { github_username, email, dockerToken, valor_venda, observacao } = body;
 
-    if (!github_username || !email || !dockerToken) {
+    if (!dockerToken) {
       return NextResponse.json(
-        { error: "GitHub username and email are required" },
+        { error: "Docker token is required" },
         { status: 400 }
       );
     }
@@ -21,9 +21,11 @@ export async function POST(request: NextRequest) {
     const { data: insertedData, error: insertError } = await supabase
       .from("access_requests")
       .insert({
-        github_username,
-        email,
+        github_username: github_username || null,
+        email: email || null,
         status: "pending",
+        valor_venda: valor_venda || null,
+        observacao: observacao || null,
       })
       .select()
       .single();
@@ -39,14 +41,16 @@ export async function POST(request: NextRequest) {
       // Removed - Generate Docker token
       // const dockerToken = await generateDockerToken(github_username);
 
-      // Grant GitHub access
-      await grantGitHubAccess(github_username);
+      // Grant GitHub access if username is provided
+      if (github_username) {
+        await grantGitHubAccess(github_username);
+      }
 
-      // Send email with credentials
+      // Send email with credentials if email is provided
       if (email) {
         await sendAccessEmail(
           email,
-          github_username,
+          github_username || "N/A",
           `${process.env.GITHUB_REPO_OWNER}/${process.env.GITHUB_REPO_NAME}`,
           `${process.env.DOCKER_HUB_USERNAME}/${process.env.DOCKER_HUB_REPO}` ||
             "your-docker-image",

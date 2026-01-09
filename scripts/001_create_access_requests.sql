@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS public.access_requests (
   status TEXT NOT NULL DEFAULT 'pending',
   github_token TEXT,
   docker_token TEXT,
+  valor_venda DECIMAL(10, 2),
+  observacao TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW())
 );
