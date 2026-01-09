@@ -1,5 +1,5 @@
 import AccessRequestForm from '@/components/access-request-form'
-import LogoutButton from '@/components/logout-button'
+import Navbar from '@/components/navbar'
 
 export const metadata = {
   title: 'GitHub Access Request',
@@ -9,13 +9,11 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
-      <div className="flex justify-end mb-6">
-        <LogoutButton />
-      </div>
-
-      <div className="flex-1 flex items-center justify-center">
-        <div className="w-full max-w-4xl">
+    <>
+      <Navbar />
+      <main className="flex min-h-[calc(100vh-4rem)] flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-full max-w-4xl">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-white mb-4">
               Access Private Resources
@@ -68,7 +66,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   )
 }

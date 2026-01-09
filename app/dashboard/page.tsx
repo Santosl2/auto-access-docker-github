@@ -1,3 +1,4 @@
+import Navbar from '@/components/navbar'
 import RequestsDashboard from '@/components/requests-dashboard'
 
 export const metadata = {
@@ -7,7 +8,9 @@ export const metadata = {
 
 export default function DashboardPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
+    <>
+      <Navbar />
+      <main className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
@@ -21,5 +24,6 @@ export default function DashboardPage() {
         <RequestsDashboard />
       </div>
     </main>
+    </>
   )
 }

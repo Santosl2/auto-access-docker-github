@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import Navbar from '@/components/navbar'
 import { createClient } from '@/lib/supabase/server'
 import { addMonths, differenceInCalendarDays, format } from 'date-fns'
 
@@ -97,7 +98,9 @@ export default async function ClientsSupportPage() {
     : 0
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 text-white">
+    <>
+      <Navbar />
+      <main className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 text-white">
       <div className="max-w-6xl mx-auto space-y-8">
         <header className="space-y-3">
           <p className="text-xs uppercase tracking-[0.2em] text-blue-300/80">
@@ -260,5 +263,6 @@ export default async function ClientsSupportPage() {
         </Card>
       </div>
     </main>
+    </>
   )
 }
